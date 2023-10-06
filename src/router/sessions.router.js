@@ -87,7 +87,9 @@ router.post('/login', async (req,res)=>{
 
 router.get('/logout', (req, res) =>{
     req.session.destroy(e=>console.log(e))
-    res.redirect('/login?mensaje=logout correcto!')
+    res.redirect('/login?mensaje=Logout correcto!')
+
+    // AGREGAR MENSAJE DE LOGOUT CORRECTO  CON FONDO AZUL
 })
 
 module.exports = router;

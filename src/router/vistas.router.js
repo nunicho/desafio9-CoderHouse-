@@ -310,7 +310,7 @@ router.get("/login", auth2, (req, res) => {
     usuarioCreadoDetalle,
     error,
     errorDetalle,
-    estilo: "login.css",
+    estilo: "login.css",  
   });
 });
 
@@ -320,6 +320,9 @@ router.get("/perfil", auth, (req, res) => {
     estilo: "login.css",
   });
 });
+
+
+
 
 module.exports = router;
 
