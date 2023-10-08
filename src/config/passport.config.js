@@ -2,6 +2,7 @@ const passport = require("passport");
 const local = require("passport-local");
 const modeloUsuarios = require("../dao/DB/models/usuarios.modelo.js");
 const crypto = require("crypto");
+const util = require("../util.js")
 
 const inicializaPassport = () => {
   passport.use(
@@ -28,15 +29,16 @@ const inicializaPassport = () => {
             done(null, false);
           }
 
-          password = crypto
-            .createHmac("sha256", "palabraSecreta")
-            .update(password)
-            .digest("base64");
+          // password = crypto
+          //   .createHmac("sha256", "palabraSecreta")
+          //   .update(password)
+          //   .digest("base64");
+
 
           let usuario = await modeloUsuarios.create({
             nombre,
             email,
-            password,
+            password: util.generaHash(password)
           });
 
           done(null, usuario)
@@ -53,46 +55,52 @@ const inicializaPassport = () => {
       },
       async (username, password, done) => {
           try{
-               if (!username || !password) {
-                 //return  res.status(400).send('faltan datos')
-                 //return res.redirect("/login?error=Faltan datos");
-                 done(null, false)
-               }
+            if (!username || !password) {
+              //return  res.status(400).send('faltan datos')
+              //return res.redirect("/login?error=Faltan datos");
+              return done(null, false);
+            }
 
-               if (
-                 username === "adminCoder@coder.com" &&
-                 password === "adminCod3r123"
-               ) {
-                 // En lugar de redirigir aquí, simplemente pasa el usuario autenticado al callback done
-                 const user = {
-                   nombre: "Coder",
-                   email: "adminCoder@coder.com",
-                   rol: "administrador",                  
-                 };
-                 return done(null, user);
-               }
-               password = crypto
-                 .createHmac("sha256", "palabraSecreta")
-                 .update(password)
-                 .digest("base64");
+            // if (
+            //   username === "adminCoder@coder.com" &&
+            //   password === "adminCod3r123"
+            // ) {
+            //   // En lugar de redirigir aquí, simplemente pasa el usuario autenticado al callback done
+            //   const user = {
+            //     nombre: "Coder",
+            //     email: "adminCoder@coder.com",
+            //     rol: "administrador",
+            //   };
+            //   return done(null, user);
+            // }
+            //  password = crypto
+            //    .createHmac("sha256", "palabraSecreta")
+            //    .update(password)
+            //    .digest("base64");
 
-               let usuario = await modeloUsuarios.findOne({ email:username, password:password });
-               if (!usuario) {
-                 //return res.status(401).send('credenciales incorrectas')
-                 //return res.redirect("/login?error=credenciales incorrectas");
-                 done(null, false)
-               }
+            //let usuario = await modeloUsuarios.findOne({ email:username, password:password });
+            let usuario = await modeloUsuarios.findOne({ email:username});
+            if (!usuario) {
+              //return res.status(401).send('credenciales incorrectas')
+              //return res.redirect("/login?error=credenciales incorrectas");
+              return done(null, false);
+            }else{
+              if(!util.validaHash(usuario, password)){
+                // clave invalida
+                return done(null, false)
+              }
+            }
 
-               usuario = {
-                nombre: usuario.nombre,
-                email: usuario.email,
-                _id: usuario._id
-               }
+            usuario = {
+              nombre: usuario.nombre,
+              email: usuario.email,
+              _id: usuario._id,
+            };
 
-               done(null, usuario)
+            return done(null, usuario);
           } catch (error){
               //done(error, null)
-              done(error);
+              return done(error);
           }
       }
    ));
