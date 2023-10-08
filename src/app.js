@@ -9,10 +9,14 @@ const path = require("path");
 const cookieParser = require("cookie-parser")
 
 
-
+//SESSION
 const session = require("express-session");
 const ConnectMongo = require("connect-mongo");
 
+//PASSPORT
+
+const inicializaPassport = require("./config/passport.config.js")
+const passport = require("passport")
 
 // HANDLEBARS - importación
 const handlebars = require("express-handlebars");
@@ -40,6 +44,13 @@ app.use(
     }),
   })
 );
+
+//PARA INICIAR PASSPORT
+
+inicializaPassport()
+app.use(passport.initialize())
+app.use(passport.session())
+
 
 // PARA EL MANEJO DE COOKIES
 app.use(cookieParser())
