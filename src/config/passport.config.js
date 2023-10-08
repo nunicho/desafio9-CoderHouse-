@@ -13,7 +13,7 @@ const inicializaPassport = () => {
       },
       async (req, username, password, done) => {
         try {
-            console.log("Pasando por passport registro! ...")
+          // console.log("Pasando por passport registro! ...")
           //lógica de registro
           let { nombre, email, password } = req.body;
 
@@ -53,36 +53,44 @@ const inicializaPassport = () => {
       },
       async (username, password, done) => {
           try{
-               if (!email || !password) {
+               if (!username || !password) {
                  //return  res.status(400).send('faltan datos')
-                 return res.redirect("/login?error=Faltan datos");
+                 //return res.redirect("/login?error=Faltan datos");
+                 done(null, false)
                }
 
                if (
-                 email === "adminCoder@coder.com" &&
+                 username === "adminCoder@coder.com" &&
                  password === "adminCod3r123"
                ) {
-                 req.session.usuario = {
+                 // En lugar de redirigir aquí, simplemente pasa el usuario autenticado al callback done
+                 const user = {
                    nombre: "Coder",
                    email: "adminCoder@coder.com",
-                   rol: "administrador",
+                   rol: "administrador",                  
                  };
-
-                 //Se puso hardcodeado adminCoder@coder.com en el código de sessions.router.js porque no debía estar en la base de datos de usuarios.
-
-                 return res.redirect("/");
+                 return done(null, user);
                }
                password = crypto
                  .createHmac("sha256", "palabraSecreta")
                  .update(password)
                  .digest("base64");
 
-               let usuario = await modeloUsuarios.findOne({ email, password });
+               let usuario = await modeloUsuarios.findOne({ email:username, password:password });
                if (!usuario) {
                  //return res.status(401).send('credenciales incorrectas')
-                 return res.redirect("/login?error=credenciales incorrectas");
+                 //return res.redirect("/login?error=credenciales incorrectas");
+                 done(null, false)
                }
-          } catch{
+
+               usuario = {
+                nombre: usuario.nombre,
+                email: usuario.email,
+                _id: usuario._id
+               }
+
+               done(null, usuario)
+          } catch (error){
               //done(error, null)
               done(error);
           }
