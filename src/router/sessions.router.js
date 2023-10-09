@@ -24,29 +24,29 @@ router.post(
     try {
       let { nombre, email, password } = req.body;
 
-       if (!nombre || !email || !password) {
-         return res.redirect(
-           "/registro?error=Complete email, nombre, y contraseña"
-         );
-       }
+      // if (!nombre || !email || !password) {
+      //   return res.redirect(
+      //     "/registro?error=Complete email, nombre, y contraseña"
+      //   );
+      // }
 
-       let existe = await modeloUsuarios.findOne({ email });
-       if (existe) {
-         return res.redirect(
-           "/registro?error=" + `Usuario ya está registrado: ${email}`
-         );
-       }
+      // let existe = await modeloUsuarios.findOne({ email });
+      // if (existe) {
+      //   return res.redirect(
+      //     "/registro?error=" + `Usuario ya está registrado: ${email}`
+      //   );
+      // }
 
       // password = crypto
       //   .createHmac("sha256", "palabraSecreta")
       //   .update(password)
       //   .digest("base64");
 
-       await modeloUsuarios.create({
-         nombre,
-         email,
-         password,
-       });
+      // await modeloUsuarios.create({
+      //   nombre,
+      //   email,
+      //   password,
+      // });
 
       console.log(req.user);
 

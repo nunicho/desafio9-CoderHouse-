@@ -117,7 +117,7 @@ const inicializaPassport = () => {
  );
 
   passport.use(
-    "logingithub",
+    "loginGithub",
     new github.Strategy(
       {
         clientID: "Iv1.cc00dcea44bb45db",
