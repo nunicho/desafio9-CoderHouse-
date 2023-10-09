@@ -24,29 +24,29 @@ router.post(
     try {
       let { nombre, email, password } = req.body;
 
-      // if (!nombre || !email || !password) {
-      //   return res.redirect(
-      //     "/registro?error=Complete email, nombre, y contraseña"
-      //   );
-      // }
+       if (!nombre || !email || !password) {
+         return res.redirect(
+           "/registro?error=Complete email, nombre, y contraseña"
+         );
+       }
 
-      // let existe = await modeloUsuarios.findOne({ email });
-      // if (existe) {
-      //   return res.redirect(
-      //     "/registro?error=" + `Usuario ya está registrado: ${email}`
-      //   );
-      // }
+       let existe = await modeloUsuarios.findOne({ email });
+       if (existe) {
+         return res.redirect(
+           "/registro?error=" + `Usuario ya está registrado: ${email}`
+         );
+       }
 
       // password = crypto
       //   .createHmac("sha256", "palabraSecreta")
       //   .update(password)
       //   .digest("base64");
 
-      // await modeloUsuarios.create({
-      //   nombre,
-      //   email,
-      //   password,
-      // });
+       await modeloUsuarios.create({
+         nombre,
+         email,
+         password,
+       });
 
       console.log(req.user);
 
@@ -70,7 +70,7 @@ router.get("/errorLogin", (req, res) => {
 
 router.post(
   "/login",
-  passport.authenticate("login", {
+  passport.authenticate("loginLocal", {
     failureRedirect: "/api/sessions/errorLogin",
   }),
   async (req, res) => {
@@ -123,11 +123,11 @@ router.get("/logout", (req, res) => {
   // AGREGAR MENSAJE DE LOGOUT CORRECTO  CON FONDO AZUL
 });
 
-router.get("/github", passport.authenticate("github", {}), (req, res) => {});
+router.get("/github", passport.authenticate("loginGithub", {}), (req, res) => {});
 
 router.get(
   "/callbackGithub",
-  passport.authenticate("github", {
+  passport.authenticate("loginGithub", {
     failureRedirect: "/api/sessions/errorGithub",
   }),
   (req, res) => {

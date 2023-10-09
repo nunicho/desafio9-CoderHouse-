@@ -5,13 +5,13 @@
 <form action="/api/sessions/login" method="POST">
 
 
-    {{#if error}}
-        <div class="error">{{errorDetalle}}</div>
-    {{/if}}
+        {{#if error}}
+            <div class="error">{{errorDetalle}}</div>
+        {{/if}}
 
-    {{#if usuarioCreado}}
-        <div class="success">Se ha creado correctamente el usuario {{usuarioCreadoDetalle}}</div>
-    {{/if}}
+        {{#if usuarioCreado}}
+            <div class="success">Se ha creado correctamente el usuario {{usuarioCreadoDetalle}}</div>
+        {{/if}}
 
     {{!-- {{#if logoutExitoso}}
         <div class="mensaje">Se ha creado correctamente el usuario {{usuarioCreadoDetalle}}</div>
