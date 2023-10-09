@@ -123,7 +123,14 @@ router.get("/logout", (req, res) => {
   // AGREGAR MENSAJE DE LOGOUT CORRECTO  CON FONDO AZUL
 });
 
-router.get("/github", passport.authenticate("loginGithub", {}), (req, res) => {});
+router.get(
+  "/github",
+  passport.authenticate("loginGithub", {
+    successRedirect: "/",
+    failureRedirect: "/api/sessions/errorGithub",
+  }),
+  (req, res) => {}
+);
 
 router.get(
   "/callbackGithub",
@@ -131,13 +138,27 @@ router.get(
     failureRedirect: "/api/sessions/errorGithub",
   }),
   (req, res) => {
-    res.setHeader("Content-type", "application/json");
-    res.status(200).json({
-      mensaje: "Login OK",
-      usuario: req.user,
-    });
+    console.log(req.user);
+   req.session.usuario = req.user;
+   res.redirect("/");
   }
+  
 );
+
+// router.get(
+//   "/callbackGithub",
+//   passport.authenticate("loginGithub", {
+//     failureRedirect: "/api/sessions/errorGithub",
+//   }),
+//   (req, res) => {
+//     res.setHeader("Content-type", "application/json");
+//     res.status(200).json({
+//       mensaje: "Login OK",
+//       usuario: req.user,
+//     });
+//   }
+// );
+
 
 router.get("/errorGithub", (req, res) => {
   res.setHeader("Content-type", "application/json");
