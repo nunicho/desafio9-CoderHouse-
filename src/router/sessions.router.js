@@ -1,7 +1,7 @@
 const express = require("express");
 //const mongoose = require("mongoose");
 const router = express.Router();
-const modeloUsuarios = require("../dao/DB/models/usuarios.modelo.js");
+const modeloUsuarios = require("../dao/DB/models/usuariosGithub.modelo.js");
 const crypto = require("crypto");
 
 //PARA TRAER PASSPORT
@@ -68,7 +68,9 @@ router.get("/errorLogin", (req, res) => {
   });
 });
 
-router.post("/login", passport.authenticate("login", {
+router.post(
+  "/login",
+  passport.authenticate("login", {
     failureRedirect: "/api/sessions/errorLogin",
   }),
   async (req, res) => {
@@ -100,8 +102,7 @@ router.post("/login", passport.authenticate("login", {
     //     return res.redirect("/login?error=credenciales incorrectas");
     // }
 
-
-    console.log(req.user)
+    console.log(req.user);
 
     // req.session.usuario = {
     //   nombre: usuario.nombre,
@@ -109,7 +110,7 @@ router.post("/login", passport.authenticate("login", {
     //   rol: "usuario",
     // };
 
-    req.session.usuario = req.user
+    req.session.usuario = req.user;
 
     res.redirect("/");
   }
@@ -120,6 +121,29 @@ router.get("/logout", (req, res) => {
   res.redirect("/login?mensaje=Logout correcto!");
 
   // AGREGAR MENSAJE DE LOGOUT CORRECTO  CON FONDO AZUL
+});
+
+router.get("/github", passport.authenticate("github", {}), (req, res) => {});
+
+router.get(
+  "/callbackGithub",
+  passport.authenticate("github", {
+    failureRedirect: "/api/sessions/errorGithub",
+  }),
+  (req, res) => {
+    res.setHeader("Content-type", "application/json");
+    res.status(200).json({
+      mensaje: "Login OK",
+      usuario: req.user,
+    });
+  }
+);
+
+router.get("/errorGithub", (req, res) => {
+  res.setHeader("Content-type", "application/json");
+  res.status(200).json({
+    error: "Error en github",
+  });
 });
 
 module.exports = router;
