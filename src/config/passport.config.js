@@ -105,6 +105,7 @@ const inicializaPassport = () => {
            nombre: usuario.nombre,
            email: usuario.email,
            _id: usuario._id,
+           rol: "usuario",
          };
 
          return done(null, usuario);
