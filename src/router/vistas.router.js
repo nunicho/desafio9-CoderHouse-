@@ -332,6 +332,7 @@ router.get("/loginAdmin", (req, res) => {
   res.status(200).render("loginAdmin", {
     error,
     errorDetalle,
+    estilo: "login.css",
   });
 });
 
