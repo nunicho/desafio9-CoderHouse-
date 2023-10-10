@@ -321,7 +321,9 @@ router.get("/perfil", auth, (req, res) => {
   });
 });
 
-
+router.get("/loginAdmin", (req, res) => {
+  res.status(200).render("loginAdmin");
+});
 
 
 module.exports = router;
