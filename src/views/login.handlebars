@@ -1,6 +1,12 @@
-<h2>Login de usuarios: </h2>
+<h1>Ferretería El Tornillo - Menú de Login</h1>
 <hr>
-<a href="/api/sessions/github">Entrar con github</a>
+
+<h3>Ingresar con GitHub</h3>
+
+<a class="github-button" href="/api/sessions/github">GITHUB</a>
+
+<hr>
+<h3>Ingresar con Usuario Local</h3>
 
 <form action="/api/sessions/login" method="POST">
 
@@ -22,6 +28,17 @@
     <input type="submit" value="Login">
 </form>
 
-<a href="/loginAdmin"> Login como Administrador</a>
+<hr>
+
+<h3>Administrador</h3>
+
+<a class="admin-button" href="/loginAdmin"> Login como Administrador</a>
    <br>
     {{>menu}}
+
+
+
+
+
+
+    

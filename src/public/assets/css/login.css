@@ -97,3 +97,33 @@ h4 {
   border-radius: 4px;
   margin-bottom: 5px;
 }
+
+/* Estilo para el botón de GitHub */
+.github-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.github-button:hover {
+    background-color: #444;
+}
+
+/* Estilo para el botón de Administrador */
+.admin-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.admin-button:hover {
+    background-color: #444;
+}
