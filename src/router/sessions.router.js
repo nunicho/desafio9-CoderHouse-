@@ -127,7 +127,7 @@ router.post("/loginAdmin", async (req, res) => {
     return res.redirect("/");
   } else {
     // Autenticación fallida
-    return res.redirect("/loginAdmin?error=credenciales incorrectas");
+    return res.redirect("/loginAdmin?error=Credenciales incorrectas");
   }
 });
 
