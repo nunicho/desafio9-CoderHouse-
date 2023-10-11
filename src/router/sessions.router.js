@@ -44,17 +44,34 @@ router.get("/errorLogin", (req, res) => {
   });
 });
 
-router.post(
-  "/login",
-  passport.authenticate("loginLocal", {
-    failureRedirect: "/api/sessions/errorLogin",
-  }),
-  async (req, res) => { 
-    console.log(req.user);   
-    req.session.usuario = req.user;
-    res.redirect("/");
+router.post("/login", (req, res, next) => {
+  // Verifica si username y password están vacíos y muestra un mensaje de error
+  if (!req.body.email || !req.body.password) {
+    return res.redirect("/login?error=Faltan datos");
   }
-);
+
+  // Si los campos no están vacíos, entonces ejecuta el middleware de Passport
+  passport.authenticate("loginLocal", (error, usuario, info) => {
+    if (error) {
+      // Manejar errores de autenticación, si los hay
+      return res.status(500).send("Error en la autenticación");
+    }
+
+    if (!usuario) {
+      if (info === "Credenciales incorrectas") {
+        console.log(info); // Esto mostrará "Credenciales incorrectas" en la consola
+        return res.redirect("/login?error=Credenciales incorrectas");
+      } else if (info === "Clave inválida") {
+        console.log(info); // Esto mostrará "Clave inválida" en la consola
+        return res.redirect("/login?error=Clave inválida");
+      }
+    }
+
+    // Autenticación exitosa
+    req.session.usuario = usuario;
+    res.redirect("/");
+  })(req, res, next);
+});
 
 router.get("/logout", (req, res) => {
   req.session.destroy((e) => console.log(e));

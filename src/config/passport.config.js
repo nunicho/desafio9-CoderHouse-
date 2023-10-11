@@ -66,38 +66,15 @@ const inicializaPassport = () => {
      async (username, password, done) => {
        try {
          if (!username || !password) {
-           //return  res.status(400).send('faltan datos')
-           //return res.redirect("/login?error=Faltan datos");
-           return done(null, false);
+           return done(null, false, "Faltan datos"); // En lugar de { error: "Faltan datos" }
          }
 
-         // if (
-         //   username === "adminCoder@coder.com" &&
-         //   password === "adminCod3r123"
-         // ) {
-         //   // En lugar de redirigir aquí, simplemente pasa el usuario autenticado al callback done
-         //   const user = {
-         //     nombre: "Coder",
-         //     email: "adminCoder@coder.com",
-         //     rol: "administrador",
-         //   };
-         //   return done(null, user);
-         // }
-         //  password = crypto
-         //    .createHmac("sha256", "palabraSecreta")
-         //    .update(password)
-         //    .digest("base64");
-
-         //let usuario = await modeloUsuarios.findOne({ email:username, password:password });
          let usuario = await modeloUsuarios.findOne({ email: username });
          if (!usuario) {
-           //return res.status(401).send('credenciales incorrectas')
-           //return res.redirect("/login?error=credenciales incorrectas");
-           return done(null, false);
+           return done(null, false, "Credenciales incorrectas"); // En lugar de { error: "Credenciales incorrectas" }
          } else {
            if (!util.validaHash(usuario, password)) {
-             // clave invalida
-             return done(null, false);
+             return done(null, false, "Clave inválida"); // En lugar de { error: "Clave inválida" }
            }
          }
 
@@ -110,7 +87,6 @@ const inicializaPassport = () => {
 
          return done(null, usuario);
        } catch (error) {
-         //done(error, null)
          return done(error);
        }
      }
