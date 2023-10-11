@@ -268,6 +268,7 @@ router.get("/chat", auth, (req, res) => {
   res.setHeader("Content-type", "text/html");
   res.status(200).render("chat", {
     estilo: "chat.css",
+    usuario: req.session.usuario,
   });
 });
 

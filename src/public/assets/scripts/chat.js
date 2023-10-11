@@ -1,6 +1,6 @@
 const socket = io();
 
-let nombre = "";
+let nombre = document.getElementById("usuario").value;
 let divMensajes = document.getElementById("mensajes");
 let inputMensajes = document.getElementById("mensaje");
 
@@ -24,14 +24,10 @@ Swal.fire({
   inputAttributes: {
     autocapitalize: "off",
   },
-  inputValidator: (value) => {
-    if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value)) {
-      return "Debe ingresar un correo electrónico válido...!!!";
-    }
-  },
+
   allowOutsideClick: false,
 }).then((resultado) => {
-  nombre = resultado.value;
+  // nombre = resultado.value;
 
   document.title = nombre;
   inputMensajes.focus();
