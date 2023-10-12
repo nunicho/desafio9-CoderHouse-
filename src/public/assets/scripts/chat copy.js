@@ -32,13 +32,9 @@ socket.on("bienvenida", (mensajes) => {
   divMensajes.scrollTop = divMensajes.scrollHeight;
 });
 
-  socket.on("nuevoUsuario", (usuarioConectado) => {
-    Swal.fire({
-      text: `${usuarioConectado} se ha conectado...!!!`,
-      toast: true,
-      position: "top-right",
-    });
-  });
+socket.on("nuevoUsuario", (nombre) => {
+  // Esto se muestra cuando un nuevo usuario se conecta
+});
 
 socket.on("llegoMensaje", (mensaje) => {
   let txt = "";
@@ -48,21 +44,10 @@ socket.on("llegoMensaje", (mensaje) => {
   divMensajes.scrollTop = divMensajes.scrollHeight;
 });
 
-socket.on("usuarioDesconectado", (usuario) => {
-  const nombre = usuario.nombre; // Accede a la propiedad "nombre" del objeto usuario
-  Swal.fire({
-    text: `${nombre} ha abandonado el chat`,
-    toast: true,
-    position: "top-right",
-  });
-});
-  
-    /*
   socket.on("usuarioDesconectado", (usuario) => {
     Swal.fire({
       text: `${usuario.nombre} ha abandonado el chat`,
       toast: true,
       position: "top-right",
     });
-    });
-    */
+  });
