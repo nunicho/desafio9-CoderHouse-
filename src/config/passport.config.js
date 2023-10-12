@@ -103,6 +103,7 @@ passport.use(
               nombre: profile._json.name,
               email: profile._json.email,
               github: profile,
+              rol: "usuario"
             });
           }
 

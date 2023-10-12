@@ -8,7 +8,8 @@ const modeloUsuariosGithub =mongoose.model('usuarios', new mongoose.Schema({
         unique: true,
     },
     password: String,
-    github: {}
+    github: {},
+    rol: String
 }))
 
 module.exports = modeloUsuariosGithub;
