@@ -14,15 +14,15 @@ Mauricio Javier ALONSO
 
 3. ## TITULO DESAFIO ENTREGABLE: 
 
-Implementación de Login
+Refactor de nuestro login
 
 4. ## N° DESAFIO ENTREGABLE: 
 
-N° 8
+N° 9
 
 5. ## CONSIGNA DESAFIO ENTREGABLE: 
 
-Ajustar nuestro servidor principal para trabajar con un sistema de login.
+Con base en el login de nuestro entregable anterior, refactorizar para incluir los nuevos conceptos.
 
 
 
@@ -138,3 +138,9 @@ Email: adminCoder@coder.com
 Pass: adminCod3r123
 
 Se puso hardcodeado en el código de sessions.router.js porque no debía estar en la base de datos de usuarios. 
+
+10. ## Claves para el acceso a Github
+
+clientID: "Iv1.cc00dcea44bb45db",
+clientSecret: "764f4be595fd9209469809ec57f129d727a1f467",
+callbackURL: "http://localhost:8080/api/sessions/callbackGithub",
