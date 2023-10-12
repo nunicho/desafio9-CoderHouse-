@@ -23,25 +23,19 @@ const inicializaPassport = () => {
      },
      async (req, username, password, done) => {
        try {
-         // console.log("Pasando por passport registro! ...")
-         //lógica de registro
          let { nombre, email, password } = req.body;
 
          if (!nombre || !email || !password) {
-           // return res.redirect("/registro?error=Complete email, nombre, y contraseña");
            done(null, false);
          }
 
          let existe = await modeloUsuarios.findOne({ email });
          if (existe) {
-           //return res.redirect("/registro?error=" + `Usuario ya está registrado: ${email}`);
+
            done(null, false);
          }
 
-         // password = crypto
-         //   .createHmac("sha256", "palabraSecreta")
-         //   .update(password)
-         //   .digest("base64");
+
 
          let usuario = await modeloUsuarios.create({
            nombre,
@@ -66,15 +60,15 @@ const inicializaPassport = () => {
      async (username, password, done) => {
        try {
          if (!username || !password) {
-           return done(null, false, "Faltan datos"); // En lugar de { error: "Faltan datos" }
+           return done(null, false, "Faltan datos"); 
          }
 
          let usuario = await modeloUsuarios.findOne({ email: username });
          if (!usuario) {
-           return done(null, false, "Credenciales incorrectas"); // En lugar de { error: "Credenciales incorrectas" }
+           return done(null, false, "Credenciales incorrectas"); 
          } else {
            if (!util.validaHash(usuario, password)) {
-             return done(null, false, "Clave inválida"); // En lugar de { error: "Clave inválida" }
+             return done(null, false, "Clave inválida"); 
            }
          }
 

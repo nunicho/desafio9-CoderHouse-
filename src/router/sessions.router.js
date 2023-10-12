@@ -45,29 +45,29 @@ router.get("/errorLogin", (req, res) => {
 });
 
 router.post("/login", (req, res, next) => {
-  // Verifica si username y password están vacíos y muestra un mensaje de error
+
   if (!req.body.email || !req.body.password) {
     return res.redirect("/login?error=Faltan datos");
   }
 
-  // Si los campos no están vacíos, entonces ejecuta el middleware de Passport
+
   passport.authenticate("loginLocal", (error, usuario, info) => {
     if (error) {
-      // Manejar errores de autenticación, si los hay
+     
       return res.status(500).send("Error en la autenticación");
     }
 
     if (!usuario) {
       if (info === "Credenciales incorrectas") {
-        console.log(info); // Esto mostrará "Credenciales incorrectas" en la consola
+        console.log(info); 
         return res.redirect("/login?error=Credenciales incorrectas");
       } else if (info === "Clave inválida") {
-        console.log(info); // Esto mostrará "Clave inválida" en la consola
+        console.log(info); 
         return res.redirect("/login?error=Clave inválida");
       }
     }
 
-    // Autenticación exitosa
+
     req.session.usuario = usuario;
     res.redirect("/");
   })(req, res, next);
@@ -101,20 +101,6 @@ router.get(
   }
   
 );
-
-// router.get(
-//   "/callbackGithub",
-//   passport.authenticate("loginGithub", {
-//     failureRedirect: "/api/sessions/errorGithub",
-//   }),
-//   (req, res) => {
-//     res.setHeader("Content-type", "application/json");
-//     res.status(200).json({
-//       mensaje: "Login OK",
-//       usuario: req.user,
-//     });
-//   }
-// );
 
 
 router.get("/errorGithub", (req, res) => {
