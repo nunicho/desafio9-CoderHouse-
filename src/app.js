@@ -38,8 +38,8 @@ app.use(
     saveUninitialized: true,
     store: ConnectMongo.create({
       mongoUrl:
-        //"mongodb+srv://mauricioalonso:12345qwert@cluster0.frgywur.mongodb.net/?retryWrites=true&w=majority&dbName=ecommerce"
-        "mongodb+srv://contaalonso:12345qwert@cluster0.k4sa2ya.mongodb.net/?retryWrites=true&w=majority&dbName=ecommercePRUEBA",
+        "mongodb+srv://mauricioalonso:12345qwert@cluster0.frgywur.mongodb.net/?retryWrites=true&w=majority&dbName=ecommerce",
+        //"mongodb+srv://contaalonso:12345qwert@cluster0.k4sa2ya.mongodb.net/?retryWrites=true&w=majority&dbName=ecommercePRUEBA",
       ttl: 3600,
     }),
   })
@@ -111,8 +111,8 @@ serverSocket.on("connection", (socket) => {});
 
 moongose
   .connect(
-   "mongodb+srv://contaalonso:12345qwert@cluster0.k4sa2ya.mongodb.net/?retryWrites=true&w=majority&dbName=ecommercePRUEBA"
-    //"mongodb+srv://mauricioalonso:12345qwert@cluster0.frgywur.mongodb.net/?retryWrites=true&w=majority&dbName=ecommerce"
+    "mongodb+srv://mauricioalonso:12345qwert@cluster0.frgywur.mongodb.net/?retryWrites=true&w=majority&dbName=ecommerce"
+    //"mongodb+srv://contaalonso:12345qwert@cluster0.k4sa2ya.mongodb.net/?retryWrites=true&w=majority&dbName=ecommercePRUEBA"
   )
   .then(console.log("DB Conectada"))
   .catch((error) => console.log(error));
@@ -165,16 +165,7 @@ socket.on("disconnect", () => {
   console.log(usuario);
   usuarios.splice(indice, 1);
 });
-  /*
-  socket.on("disconnect", () => {
-    console.log(`se desconecto el cliente con id ${socket.id}`);
-    let indice = usuarios.findIndex((usuario) => usuario.id === socket.id);
-    let usuario = usuarios[indice];
-    serverSocketChat.emit("usuarioDesconectado", usuario);
-    console.log(usuario);
-    usuarios.splice(indice, 1);
-  });
-*/
+ 
   socket.on("productoAgregado", (data) => {
     console.log(`Se ha agregado ${data.title}`);
     serverSocket.emit("productoAgregado", data);
