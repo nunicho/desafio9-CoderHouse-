@@ -22,7 +22,7 @@ N° 9
 
 5. ## CONSIGNA DESAFIO ENTREGABLE: 
 
-Con base en el login de nuestro entregable anterior, refactorizar para incluir los nuevos conceptos.
+Con base en el login de nuestro entregable anterior, refactorizar para incluir los nuevos  conceptos.
 
 
 
