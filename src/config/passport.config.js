@@ -14,78 +14,75 @@ const crypto = require("crypto");
 const util = require("../util.js");
 
 const inicializaPassport = () => {
- passport.use(
-   "registro",
-   new local.Strategy(
-     {
-       usernameField: "email",
-       passReqToCallback: true,
-     },
-     async (req, username, password, done) => {
-       try {
-         let { nombre, email, password } = req.body;
+passport.use(
+  "registro",
+  new local.Strategy(
+    {
+      usernameField: "email",
+      passReqToCallback: true,
+    },
+    async (req, username, password, done) => {
+      try {
+        let { nombre, email, password } = req.body;
 
-         if (!nombre || !email || !password) {
-           done(null, false);
-         }
+        if (!nombre || !email || !password) {
+          return done(null, false, "Por favor, complete todos los campos.");
+        }
 
-         let existe = await modeloUsuarios.findOne({ email });
-         if (existe) {
+        let existe = await modeloUsuarios.findOne({ email });
+        if (existe) {
+          return done(null, false, "El correo electrónico ya está registrado");
+        }
 
-           done(null, false);
-         }
+        let usuario = await modeloUsuarios.create({
+          nombre,
+          email,
+          password: util.generaHash(password),
+        });
 
+        return done(null, usuario);
+      } catch (error) {
+        return done(error, false, "Ocurrió un error durante el registro.");
+      }
+    }
+  )
+);
 
+  passport.use(
+    "loginLocal",
+    new local.Strategy(
+      {
+        usernameField: "email",
+      },
+      async (username, password, done) => {
+        try {
+          if (!username || !password) {
+            return done(null, false, "Faltan datos");
+          }
 
-         let usuario = await modeloUsuarios.create({
-           nombre,
-           email,
-           password: util.generaHash(password),
-         });
+          let usuario = await modeloUsuarios.findOne({ email: username });
+          if (!usuario) {
+            return done(null, false, "Credenciales incorrectas");
+          } else {
+            if (!util.validaHash(usuario, password)) {
+              return done(null, false, "Clave inválida");
+            }
+          }
 
-         done(null, usuario);
-       } catch (error) {
-         done(error);
-       }
-     }
-   )
- );
+          usuario = {
+            nombre: usuario.nombre,
+            email: usuario.email,
+            _id: usuario._id,
+            rol: "usuario",
+          };
 
- passport.use(
-   "loginLocal",
-   new local.Strategy(
-     {
-       usernameField: "email",
-     },
-     async (username, password, done) => {
-       try {
-         if (!username || !password) {
-           return done(null, false, "Faltan datos"); 
-         }
-
-         let usuario = await modeloUsuarios.findOne({ email: username });
-         if (!usuario) {
-           return done(null, false, "Credenciales incorrectas"); 
-         } else {
-           if (!util.validaHash(usuario, password)) {
-             return done(null, false, "Clave inválida"); 
-           }
-         }
-
-         usuario = {
-           nombre: usuario.nombre,
-           email: usuario.email,
-           _id: usuario._id,
-           rol: "usuario",
-         };
-
-         return done(null, usuario);
-       } catch (error) {
-         return done(error);
-       }
-     }
-   )
- );
+          return done(null, usuario);
+        } catch (error) {
+          return done(error);
+        }
+      }
+    )
+  );
 
   passport.use(
     "loginGithub",
@@ -98,12 +95,14 @@ const inicializaPassport = () => {
       async (token, tokenRefresh, profile, done) => {
         try {
           console.log(profile);
-          let usuario = await modeloUsuariosGithub.findOne({email: profile._json.email});
+          let usuario = await modeloUsuariosGithub.findOne({
+            email: profile._json.email,
+          });
           if (!usuario) {
             usuario = await modeloUsuariosGithub.create({
               nombre: profile._json.name,
               email: profile._json.email,
-              github: profile
+              github: profile,
             });
           }
 

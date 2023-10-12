@@ -15,10 +15,39 @@ router.get("/errorRegistro", (req, res) => {
   });
 });
 
+router.post("/registro", async (req, res, next) => {
+  let nombre = req.body.nombre;
+  let email = req.body.email;
+  let password = req.body.password;
+   let existe = await modeloUsuarios.findOne({ email });
+
+
+  if (!nombre || !email || !password) {
+    return res.redirect("/registro?error=Faltan datos");
+  }
+
+  passport.authenticate("registro", async (error) => {
+    if (error) {
+      return res.redirect(
+        "/registro?error=Ocurrió un error al registrar el usuario"
+      );
+    }   
+    if (existe) {
+      return res.redirect(
+        "/registro?error=El correo electrónico ya está en uso"
+      );
+    }
+
+    // Si no hay errores, se redirige a la página de inicio de sesión.
+    res.redirect(`/login?usuarioCreado=${email}`);
+  })(req, res, next);
+});
+
+/*
 router.post(
   "/registro",
   passport.authenticate("registro", {
-    failureRedirect: "/api/sessions/errorRegistro",
+    failureRedirect: "/registro?error=Blabla",
   }),
   async (req, res) => {
     try {
@@ -36,6 +65,7 @@ router.post(
     }
   }
 );
+*/
 
 router.get("/errorLogin", (req, res) => {
   res.setHeader("Content-Type", "application/json");
@@ -45,28 +75,24 @@ router.get("/errorLogin", (req, res) => {
 });
 
 router.post("/login", (req, res, next) => {
-
   if (!req.body.email || !req.body.password) {
     return res.redirect("/login?error=Faltan datos");
   }
 
-
   passport.authenticate("loginLocal", (error, usuario, info) => {
     if (error) {
-     
       return res.status(500).send("Error en la autenticación");
     }
 
     if (!usuario) {
       if (info === "Credenciales incorrectas") {
-        console.log(info); 
+        console.log(info);
         return res.redirect("/login?error=Credenciales incorrectas");
       } else if (info === "Clave inválida") {
-        console.log(info); 
+        console.log(info);
         return res.redirect("/login?error=Clave inválida");
       }
     }
-
 
     req.session.usuario = usuario;
     res.redirect("/");
@@ -96,12 +122,10 @@ router.get(
   }),
   (req, res) => {
     console.log(req.user);
-   req.session.usuario = req.user;
-   res.redirect("/");
+    req.session.usuario = req.user;
+    res.redirect("/");
   }
-  
 );
-
 
 router.get("/errorGithub", (req, res) => {
   res.setHeader("Content-type", "application/json");
@@ -109,7 +133,6 @@ router.get("/errorGithub", (req, res) => {
     error: "Error en github",
   });
 });
-
 
 // LOGIN DEL ADMINISTRADOR
 
@@ -133,6 +156,5 @@ router.post("/loginAdmin", async (req, res) => {
     return res.redirect("/loginAdmin?error=Credenciales incorrectas");
   }
 });
-
 
 module.exports = router;
