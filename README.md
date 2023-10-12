@@ -142,5 +142,5 @@ Se puso hardcodeado en el código de sessions.router.js porque no debía estar e
 10. ## Claves para el acceso a Github
 
 clientID: "Iv1.cc00dcea44bb45db",
-clientSecret: "764f4be595fd9209469809ec57f129d727a1f467",
+clientSecret: "f942dbbff3e0ead468ab3731ba8b0283a6d70057",
 callbackURL: "http://localhost:8080/api/sessions/callbackGithub",
